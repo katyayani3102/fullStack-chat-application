@@ -1,6 +1,6 @@
 import React from 'react'
 import { useThemeStore } from '../store/useThemeStore'
-import { THEMES } from '../../../../../UdemyCourseProjectCode/fullstack-chat-app/frontend/src/constants';
+import { THEMES } from '../constants'
 import { Send } from 'lucide-react';
 
 const PREVIEW_MESSAGES = [
