@@ -48,46 +48,6 @@ export const signup = async (req, res) => {
   }
 };
 
-// export const signup = async (req, res)=>{
-//     console.log(req.body);
-//     const { fullName, email, password } = req.body;
-//     try {
-//         if(password.length < 6){
-//             return res.status(400).json({message: "Password must contain minimum 6 digits!!"});
-//         }
-//         const user =  await User.findOne({email});
-//         if (user){ res.status(400).json({message: "User already exist!!"}) }
-
-//         const salt = await bcrypt.genSalt(10);
-
-//         const hashPassword = await bcrypt.hash(password,salt);
-//         const newUser = new User({
-//             fullName,
-//             email,
-//             password: hashPassword
-//         })
-
-//         if(newUser){
-//             //generate jwt token 
-//             generateToken(newUser._id, res);
-//             await newUser.save();
-
-//             res.status(201).json({
-//             _id: newUser._id,
-//             fullName: newUser.fullName,
-//             email: newUser.email,
-//             profilePic: newUser.profilepic
-//             });
-//         } else{
-//             res.status(400).json({message: "Invalid User data!!"})
-//         }
-        
-//     } catch (error) {
-//         console.log("Error in signup controller!!");
-//         res.status(500).json({message: "Internal Server Error!!"})
-//     }
-// }
-
 export const login = async (req, res)=>{
   const { email, password } = req.body;
   try {
@@ -113,7 +73,7 @@ export const login = async (req, res)=>{
   }
 };
 
-export const logout = async (req, res)=>{
+export const logout = (req, res)=>{
     try {
       res.cookie("jwt","", {maxAge: 0});
       res.status(200).json({message: " LoggedOut Successfully !!"})
@@ -130,7 +90,7 @@ export const updateProfile = async (req, res) =>{
     const userId = req.user._id;
 
     if(!profilePic){
-      res.status(400).json({message: "Profile pic is required !!"});
+      return res.status(400).json({message: "Profile pic is required !!"});
     }
 
     const uploadResponse = await cloudinary.uploader.upload(profilePic)
@@ -143,7 +103,7 @@ export const updateProfile = async (req, res) =>{
   }
 }
 
-export const checkAuth = async (req, res) =>{
+export const checkAuth = (req, res) =>{
   try {
     res.status(200).json(req.user);
   } catch (error) {
